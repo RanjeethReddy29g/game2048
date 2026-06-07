@@ -1,3 +1,4 @@
+```yaml
 name: CI-CD Pipeline
 
 on:
@@ -25,44 +26,37 @@ jobs:
       - name: Build Jar
         run: mvn clean package -DskipTests
 
-      - name: Login to DockerHub
+      - name: Login Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }} .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }} \
-          ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }} .
 
-      - name: Push Docker Images
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }}
 
   deploy:
     needs: build-and-push
     runs-on: self-hosted
 
     steps:
-      - name: Verify Cluster Connection
-        run: kubectl get nodes
-
-      - name: Pull Latest Image
+      - name: Pull Image
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }}
 
-      - name: Update Deployment Image
+      - name: Update Kubernetes Deployment
         run: |
           kubectl set image deployment/game2048 \
           game2048=${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }}
 
-      - name: Verify Rollout
+      - name: Wait For Rollout
         run: kubectl rollout status deployment/game2048
 
-      - name: Check Pods
-        run: kubectl get pods -o wide
+      - name: Show Pods
+        run: kubectl get pods
 
-      - name: Check Services
+      - name: Show Services
         run: kubectl get svc
+```
