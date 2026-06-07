@@ -1,13 +1,13 @@
 name: CI-CD Pipeline
 
 on:
-push:
-branches:
-- main
+ push:
+  branches:
+   - main
 
 jobs:
-build-and-push:
-runs-on: ubuntu-latest
+  build-and-push:
+    runs-on: ubuntu-latest
 
 
 steps:
@@ -40,8 +40,8 @@ steps:
 
 
 deploy:
-needs: build-and-push
-runs-on: self-hosted
+  needs: build-and-push
+  runs-on: self-hosted
 
 
 steps:
