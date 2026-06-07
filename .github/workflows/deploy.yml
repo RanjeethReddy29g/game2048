@@ -6,7 +6,6 @@ branches:
 - main
 
 jobs:
-
 build-and-push:
 runs-on: ubuntu-latest
 
@@ -19,7 +18,7 @@ steps:
     uses: actions/setup-java@v4
     with:
       distribution: temurin
-      java-version: '21'
+      java-version: 21
 
   - name: Run Tests
     run: mvn test
@@ -34,14 +33,10 @@ steps:
       password: ${{ secrets.DOCKERHUB_TOKEN }}
 
   - name: Build Image
-    run: |
-      docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }} .
-      docker tag ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
+    run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest .
 
   - name: Push Image
-    run: |
-      docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:${{ github.sha }}
-      docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
+    run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
 ```
 
 deploy:
