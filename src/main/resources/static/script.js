@@ -1,13 +1,5 @@
 async function loadBoard() {
 
-    async function newGame() {
-
-    await fetch('/api/game/new', {
-        method: 'POST'
-    });
-
-    loadBoard();
-}
     const response = await fetch('/api/game');
     const data = await response.json();
 
@@ -21,7 +13,7 @@ async function loadBoard() {
 
             const tile = document.createElement("div");
 
-            tile.className = "tile";
+            tile.className = "tile tile-" + cell;
             tile.innerText = cell === 0 ? "" : cell;
 
             boardDiv.appendChild(tile);
@@ -29,9 +21,16 @@ async function loadBoard() {
     });
 }
 
-async function move(direction) {
+async function newGame() {
 
-    console.log("Moving:", direction);
+    await fetch('/api/game/new', {
+        method: 'POST'
+    });
+
+    loadBoard();
+}
+
+async function move(direction) {
 
     await fetch('/api/game/move', {
         method: 'POST',
@@ -47,8 +46,6 @@ async function move(direction) {
 }
 
 document.addEventListener("keydown", function(event) {
-
-    console.log("Key Pressed:", event.key);
 
     if(event.key === "ArrowLeft")
         move("LEFT");
