@@ -9,7 +9,7 @@ jobs:
 build-and-push:
 runs-on: ubuntu-latest
 
-```
+
 steps:
   - name: Checkout Source
     uses: actions/checkout@v4
@@ -37,13 +37,13 @@ steps:
 
   - name: Push Image
     run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
-```
+
 
 deploy:
 needs: build-and-push
 runs-on: self-hosted
 
-```
+
 steps:
   - name: Pull Latest Image
     run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/game2048:latest
@@ -56,4 +56,4 @@ steps:
 
   - name: Check Pods
     run: kubectl get pods
-```
+
