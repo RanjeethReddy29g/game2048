@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Game2048Application {
 
 	public static void main(String[] args) {
+		System.out.println("Hello world");
 		SpringApplication.run(Game2048Application.class, args);
 	}
 
