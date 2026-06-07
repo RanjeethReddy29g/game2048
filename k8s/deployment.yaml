@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: game2048
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: game2048
+
+  template:
+    metadata:
+      labels:
+        app: game2048
+
+    spec:
+      containers:
+      - name: game2048
+        image: game2048:distroless
+
+        ports:
+        - containerPort: 8080

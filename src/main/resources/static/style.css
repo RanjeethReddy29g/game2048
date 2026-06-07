@@ -1,0 +1,23 @@
+body{
+    text-align:center;
+    font-family:Arial;
+}
+
+#board{
+    display:grid;
+    grid-template-columns:repeat(4,80px);
+    gap:10px;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.tile{
+    width:80px;
+    height:80px;
+    background:#ddd;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    font-weight:bold;
+}
